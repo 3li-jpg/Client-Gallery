@@ -1,0 +1,10 @@
+name = "atelier-client-gallery-images"
+main = "thumbnail-worker.ts"
+compatibility_date = "2026-04-21"
+
+[[r2_buckets]]
+binding = "GALLERY_BUCKET"
+bucket_name = "your-private-r2-bucket"
+
+[vars]
+JWT_SECRET = "match-the-nextjs-jwt-secret"

@@ -1,17 +1,24 @@
 {
-  "name": "client-gallery-app",
+  "name": "client-gallery",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "db:migrate": "psql \"$DATABASE_URL\" -f migrations/001_initial.sql"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.1034.0",
+    "@aws-sdk/s3-request-presigner": "^3.1034.0",
+    "@vercel/postgres": "^0.10.0",
+    "clsx": "^2.1.1",
+    "jose": "^6.2.2",
     "next": "16.2.4",
     "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react-dom": "19.2.4",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
