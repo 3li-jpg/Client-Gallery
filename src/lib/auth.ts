@@ -2,21 +2,15 @@ import { SignJWT, jwtVerify, type JWTPayload } from "jose";
 import { cookies } from "next/headers";
 
 import {
-  ADMIN_COOKIE_NAME,
-  ADMIN_SESSION_DAYS,
   GALLERY_COOKIE_NAME,
   GALLERY_SESSION_DAYS,
 } from "@/lib/constants";
 import { getEnv, isProduction } from "@/lib/env";
 
-type SessionKind = "admin" | "gallery" | "thumbnail";
+type SessionKind = "gallery" | "thumbnail";
 
 interface BasePayload extends JWTPayload {
   kind: SessionKind;
-}
-
-export interface AdminSessionPayload extends BasePayload {
-  kind: "admin";
 }
 
 export interface GallerySessionPayload extends BasePayload {
@@ -46,10 +40,6 @@ async function signToken(payload: BasePayload, expiresIn: string) {
     .sign(getJwtSecret());
 }
 
-export async function signAdminToken() {
-  return signToken({ kind: "admin" }, `${ADMIN_SESSION_DAYS}d`);
-}
-
 export async function signGalleryToken(galleryId: string, slug: string) {
   return signToken({ kind: "gallery", galleryId, slug }, `${GALLERY_SESSION_DAYS}d`);
 }
@@ -68,34 +58,12 @@ async function verifyToken<T extends BasePayload>(token: string, kind: SessionKi
   return payload as T;
 }
 
-export async function verifyAdminToken(token: string) {
-  return verifyToken<AdminSessionPayload>(token, "admin");
-}
-
 export async function verifyGalleryToken(token: string) {
   return verifyToken<GallerySessionPayload>(token, "gallery");
 }
 
 export async function verifyThumbnailToken(token: string) {
   return verifyToken<ThumbnailTokenPayload>(token, "thumbnail");
-}
-
-export async function setAdminSessionCookie() {
-  const cookieStore = await cookies();
-  const token = await signAdminToken();
-
-  cookieStore.set(ADMIN_COOKIE_NAME, token, {
-    httpOnly: true,
-    sameSite: "strict",
-    secure: isProduction(),
-    path: "/",
-    maxAge: ADMIN_SESSION_DAYS * 24 * 60 * 60,
-  });
-}
-
-export async function clearAdminSessionCookie() {
-  const cookieStore = await cookies();
-  cookieStore.delete(ADMIN_COOKIE_NAME);
 }
 
 export async function setGallerySessionCookie(galleryId: string, slug: string) {
@@ -114,21 +82,6 @@ export async function setGallerySessionCookie(galleryId: string, slug: string) {
 export async function clearGallerySessionCookie() {
   const cookieStore = await cookies();
   cookieStore.delete(GALLERY_COOKIE_NAME);
-}
-
-export async function getAdminSession() {
-  const cookieStore = await cookies();
-  const token = cookieStore.get(ADMIN_COOKIE_NAME)?.value;
-
-  if (!token) {
-    return null;
-  }
-
-  try {
-    return await verifyAdminToken(token);
-  } catch {
-    return null;
-  }
 }
 
 export async function getGallerySession() {

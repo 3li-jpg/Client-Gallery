@@ -11,6 +11,7 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 import { ALLOWED_IMAGE_TYPES } from "@/lib/constants";
 import { getEnv } from "@/lib/env";
+import { buildPhotoObjectKeys } from "@/lib/utils";
 
 let r2Client: S3Client | null = null;
 
@@ -86,6 +87,32 @@ export async function deletePrivateObject(key: string) {
       Key: key,
     }),
   );
+}
+
+export async function deletePrivateObjects(keys: string[]) {
+  if (keys.length === 0) {
+    return;
+  }
+
+  const env = getEnv();
+
+  for (let index = 0; index < keys.length; index += 1000) {
+    const batch = keys.slice(index, index + 1000);
+
+    await getR2Client().send(
+      new DeleteObjectsCommand({
+        Bucket: env.R2_BUCKET_NAME,
+        Delete: {
+          Objects: batch.map((key) => ({ Key: key })),
+          Quiet: true,
+        },
+      }),
+    );
+  }
+}
+
+export async function deletePhotoObjects(storageKey: string) {
+  await deletePrivateObjects(buildPhotoObjectKeys(storageKey));
 }
 
 export async function deleteGalleryObjects(galleryId: string) {

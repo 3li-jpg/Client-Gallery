@@ -1,5 +1,6 @@
 import { getEnv } from "@/lib/env";
 import { signThumbnailToken } from "@/lib/auth";
+import { buildThumbnailStorageKey, buildViewerStorageKey } from "@/lib/utils";
 
 export async function getSignedImageUrl(input: {
   galleryId: string;
@@ -34,16 +35,16 @@ export async function getPhotoVariants(input: {
     getSignedImageUrl({
       galleryId: input.galleryId,
       photoId: input.photoId,
-      r2Key: input.r2Key,
-      width: 600,
-      quality: 80,
+      r2Key: buildThumbnailStorageKey(input.r2Key),
+      width: 320,
+      quality: 48,
     }),
     getSignedImageUrl({
       galleryId: input.galleryId,
       photoId: input.photoId,
-      r2Key: input.r2Key,
-      width: 1800,
-      quality: 88,
+      r2Key: buildViewerStorageKey(input.r2Key),
+      width: 1600,
+      quality: 82,
     }),
   ]);
 

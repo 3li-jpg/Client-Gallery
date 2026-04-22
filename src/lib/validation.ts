@@ -30,3 +30,7 @@ export const finalizePhotoSchema = z.object({
   height: z.number().int().positive().optional(),
   blurDataUrl: z.string().trim().max(20000).optional(),
 });
+
+export const bulkPhotoActionSchema = z.object({
+  photoIds: z.array(z.string().uuid()).min(1).max(500),
+});

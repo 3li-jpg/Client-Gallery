@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 import { deleteGalleryAndPhotos, getGalleryById } from "@/lib/data";
 import { deleteGalleryObjects } from "@/lib/r2";
-import { hasAdminSession } from "@/lib/server-auth";
+import { auth } from "@/lib/auth-config";
 
 export const runtime = "nodejs";
 
@@ -10,14 +10,16 @@ export async function DELETE(
   _request: Request,
   context: { params: Promise<{ galleryId: string }> },
 ) {
-  if (!(await hasAdminSession())) {
+  const session = await auth();
+
+  if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
   }
 
   const { galleryId } = await context.params;
   const gallery = await getGalleryById(galleryId);
 
-  if (!gallery) {
+  if (!gallery || gallery.user_id !== session.user.id) {
     return NextResponse.json({ error: "Gallery not found." }, { status: 404 });
   }
 

@@ -1,12 +1,8 @@
 import { NextResponse } from "next/server";
 
-import { clearAdminSessionCookie } from "@/lib/auth";
+import { signOut } from "@/lib/auth-config";
 
-export const runtime = "nodejs";
-
-export async function POST(request: Request) {
-  await clearAdminSessionCookie();
-
-  const url = new URL("/admin/login", request.url);
-  return NextResponse.redirect(url, 303);
+export async function POST() {
+  await signOut({ redirect: false });
+  return NextResponse.redirect(new URL("/login", process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"));
 }

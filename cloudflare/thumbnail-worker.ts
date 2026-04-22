@@ -20,17 +20,6 @@ interface ThumbnailPayload {
   exp: number;
 }
 
-type CfRequestInit = RequestInit & {
-  cf?: {
-    image?: {
-      width: number;
-      quality: number;
-      format: "auto";
-      fit: "scale-down";
-    };
-  };
-};
-
 function base64UrlToUint8Array(value: string) {
   const normalized = value.replace(/-/g, "+").replace(/_/g, "/");
   const padded = normalized.padEnd(Math.ceil(normalized.length / 4) * 4, "=");
@@ -106,6 +95,28 @@ function jsonResponse(message: string, status: number) {
   });
 }
 
+async function getObject(env: Env, key: string) {
+  return env.GALLERY_BUCKET.get(key);
+}
+
+async function getObjectWithFallback(env: Env, key: string) {
+  const object = await getObject(env, key);
+
+  if (object?.body) {
+    return object;
+  }
+
+  if (key.endsWith(".thumb.jpg")) {
+    return getObject(env, key.slice(0, -10));
+  }
+
+  if (key.endsWith(".viewer.jpg")) {
+    return getObject(env, key.slice(0, -11));
+  }
+
+  return null;
+}
+
 const worker = {
   async fetch(request: Request, env: Env) {
     const url = new URL(request.url);
@@ -123,40 +134,27 @@ const worker = {
       return jsonResponse("Invalid token", 401);
     }
 
-    if (url.pathname.startsWith("/origin")) {
-      const object = await env.GALLERY_BUCKET.get(payload.r2Key);
-
-      if (!object?.body) {
-        return jsonResponse("Not found", 404);
-      }
-
-      return new Response(object.body, {
-        headers: {
-          "Content-Type": object.httpMetadata?.contentType ?? "application/octet-stream",
-          "Cache-Control": "private, max-age=60",
-        },
-      });
-    }
-
-    if (!url.pathname.startsWith("/thumb/")) {
+    if (!url.pathname.startsWith("/origin") && !url.pathname.startsWith("/thumb/")) {
       return jsonResponse("Not found", 404);
     }
 
-    const originUrl = new URL("/origin", url.origin);
-    originUrl.searchParams.set("token", token);
+    const object = await getObjectWithFallback(env, payload.r2Key);
 
-    const init: CfRequestInit = {
-      cf: {
-        image: {
-          width: payload.width,
-          quality: payload.quality,
-          format: "auto",
-          fit: "scale-down",
-        },
+    if (!object?.body) {
+      return jsonResponse("Not found", 404);
+    }
+
+    return new Response(object.body, {
+      headers: {
+        "Content-Type": object.httpMetadata?.contentType ?? "application/octet-stream",
+        "Cache-Control":
+          payload.r2Key.endsWith(".thumb.jpg")
+            ? "private, max-age=3600"
+            : payload.r2Key.endsWith(".viewer.jpg")
+              ? "private, max-age=900"
+              : "private, max-age=60",
       },
-    };
-
-    return fetch(originUrl.toString(), init as RequestInit);
+    });
   },
 };
 

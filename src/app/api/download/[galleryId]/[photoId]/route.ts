@@ -2,6 +2,7 @@ import { Readable } from "node:stream";
 
 import { NextResponse } from "next/server";
 
+import { auth } from "@/lib/auth-config";
 import { getGallerySession } from "@/lib/auth";
 import { getPhotoById } from "@/lib/data";
 import { getPrivateObject } from "@/lib/r2";
@@ -30,15 +31,18 @@ export async function GET(
   _request: Request,
   context: { params: Promise<{ galleryId: string; photoId: string }> },
 ) {
-  const session = await getGallerySession();
+  const [session, gallerySession] = await Promise.all([
+    auth(),
+    getGallerySession(),
+  ]);
 
-  if (!session) {
+  if (!session?.user?.id && !gallerySession) {
     return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
   }
 
   const { galleryId, photoId } = await context.params;
 
-  if (session.galleryId !== galleryId) {
+  if (!session?.user?.id && gallerySession?.galleryId !== galleryId) {
     return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
   }
 

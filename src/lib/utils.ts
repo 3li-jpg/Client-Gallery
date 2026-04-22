@@ -60,6 +60,22 @@ export function buildStorageKey(galleryId: string, filename: string) {
   return `galleries/${galleryId}/${parsed.name}-${suffix}${parsed.ext.toLowerCase()}`;
 }
 
+export function buildThumbnailStorageKey(storageKey: string) {
+  return `${storageKey}.thumb.jpg`;
+}
+
+export function buildViewerStorageKey(storageKey: string) {
+  return `${storageKey}.viewer.jpg`;
+}
+
+export function buildPhotoObjectKeys(storageKey: string) {
+  return [
+    storageKey,
+    buildThumbnailStorageKey(storageKey),
+    buildViewerStorageKey(storageKey),
+  ];
+}
+
 export function hashSecretValue(value: string) {
   const salt = randomBytes(16).toString("hex");
   const derivedKey = scryptSync(value, salt, 64).toString("hex");

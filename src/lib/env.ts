@@ -7,7 +7,6 @@ const envSchema = z.object({
   R2_BUCKET_NAME: z.string().min(1),
   R2_PUBLIC_URL: z.string().url(),
   DATABASE_URL: z.string().min(1),
-  ADMIN_PASSWORD: z.string().min(1),
   JWT_SECRET: z.string().min(32, "JWT_SECRET must be at least 32 characters"),
   NEXT_PUBLIC_APP_URL: z.string().url(),
 });

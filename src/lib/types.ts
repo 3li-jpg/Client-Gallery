@@ -1,9 +1,24 @@
+export interface UserRecord {
+  id: string;
+  name: string;
+  email: string;
+  email_verified: string | null;
+  image: string | null;
+  password_hash: string | null;
+  stripe_customer_id: string | null;
+  plan: string;
+  storage_used_bytes: number;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface GalleryRecord {
   id: string;
   slug: string;
   name: string;
   client_name: string;
   access_code: string;
+  user_id: string | null;
   created_at: string;
   last_accessed: string | null;
 }

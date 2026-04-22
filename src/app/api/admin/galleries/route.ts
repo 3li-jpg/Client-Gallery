@@ -3,12 +3,14 @@ import { NextResponse } from "next/server";
 import { createGallery, gallerySlugExists } from "@/lib/data";
 import { generateAccessCode, hashSecretValue, sanitizeSlug } from "@/lib/utils";
 import { createGallerySchema } from "@/lib/validation";
-import { hasAdminSession } from "@/lib/server-auth";
+import { auth } from "@/lib/auth-config";
 
 export const runtime = "nodejs";
 
 export async function POST(request: Request) {
-  if (!(await hasAdminSession())) {
+  const session = await auth();
+
+  if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
   }
 
@@ -30,6 +32,7 @@ export async function POST(request: Request) {
       clientName: body.clientName.trim(),
       slug,
       hashedAccessCode: hashSecretValue(accessCode),
+      userId: session.user.id,
     });
 
     return NextResponse.json(

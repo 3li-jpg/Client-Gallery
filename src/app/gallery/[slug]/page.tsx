@@ -10,10 +10,13 @@ export const dynamic = "force-dynamic";
 
 export default async function GalleryPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ slug: string }>;
+  searchParams: Promise<{ q?: string | string[]; sort?: string | string[] }>;
 }) {
   const { slug } = await params;
+  const resolvedSearchParams = await searchParams;
   const gallery = await getGalleryBySlug(slug);
 
   if (!gallery) {
@@ -46,6 +49,8 @@ export default async function GalleryPage({
         filename: photo.filename,
         width: photo.width,
         height: photo.height,
+        size_bytes: photo.size_bytes,
+        uploaded_at: photo.uploaded_at,
         blurDataUrl: photo.blur_data_url,
         thumbnailUrl: variants.thumbnailUrl,
         viewerUrl: variants.viewerUrl,
@@ -60,6 +65,20 @@ export default async function GalleryPage({
       clientName={gallery.client_name}
       photoCount={galleryPhotos.length}
       photos={galleryPhotos}
+      initialSearchQuery={
+        typeof resolvedSearchParams.q === "string"
+          ? resolvedSearchParams.q
+          : Array.isArray(resolvedSearchParams.q)
+            ? resolvedSearchParams.q[0] ?? ""
+            : ""
+      }
+      initialSortBy={
+        resolvedSearchParams.sort === "newest"
+        || resolvedSearchParams.sort === "name"
+        || resolvedSearchParams.sort === "size"
+          ? resolvedSearchParams.sort
+          : "oldest"
+      }
     />
   );
 }

@@ -1,0 +1,8 @@
+name = "atelier-client-gallery-images"
+main = "thumbnail-worker.ts"
+compatibility_date = "2026-04-21"
+compatibility_flags = ["global_fetch_strictly_public"]
+
+[[r2_buckets]]
+binding = "GALLERY_BUCKET"
+bucket_name = "client-gallery"
