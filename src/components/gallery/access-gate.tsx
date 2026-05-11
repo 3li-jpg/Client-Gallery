@@ -39,7 +39,7 @@ export function AccessGate({ slug, name, clientName }: AccessGateProps) {
   };
 
   return (
-    <main className="page-backdrop min-h-screen">
+    <main id="main-content" className="page-backdrop min-h-screen">
       <div className="page-shell flex min-h-screen items-center justify-center">
         <div className="grid w-full max-w-6xl gap-6 lg:grid-cols-[1.05fr_0.95fr]">
           <section className="section-card px-8 py-10 sm:px-10">

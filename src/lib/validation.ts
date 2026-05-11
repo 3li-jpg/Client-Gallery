@@ -18,6 +18,7 @@ export const galleryAccessSchema = z.object({
 export const uploadUrlSchema = z.object({
   filename: z.string().trim().min(1).max(180),
   contentType: z.string().trim().min(1).max(120),
+  sizeBytes: z.number().int().positive(),
 });
 
 export const finalizePhotoSchema = z.object({

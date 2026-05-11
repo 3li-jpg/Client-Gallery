@@ -1,6 +1,11 @@
 import { NextResponse } from "next/server";
 
-import { deletePhotoRecord, getGalleryById, getPhotoById } from "@/lib/data";
+import {
+  deletePhotoRecord,
+  getGalleryById,
+  getPhotoById,
+  recalculateUserStorage,
+} from "@/lib/data";
 import { deletePhotoObjects } from "@/lib/r2";
 import { auth } from "@/lib/auth-config";
 
@@ -32,6 +37,7 @@ export async function DELETE(
   try {
     await deletePhotoObjects(photo.r2_key);
     await deletePhotoRecord(galleryId, photoId);
+    await recalculateUserStorage(session.user.id);
 
     return NextResponse.json({ ok: true });
   } catch {

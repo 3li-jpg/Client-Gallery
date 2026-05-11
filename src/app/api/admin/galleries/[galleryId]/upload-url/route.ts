@@ -2,7 +2,8 @@ import { randomUUID } from "node:crypto";
 
 import { NextResponse } from "next/server";
 
-import { getGalleryById } from "@/lib/data";
+import { getGalleryById, getUserById } from "@/lib/data";
+import { canStoreBytes } from "@/lib/plans";
 import { createPresignedUploadUrl, assertAllowedImageType } from "@/lib/r2";
 import { auth } from "@/lib/auth-config";
 import {
@@ -35,6 +36,20 @@ export async function POST(
   try {
     const body = uploadUrlSchema.parse(await request.json());
     assertAllowedImageType(body.contentType);
+
+    const user = await getUserById(session.user.id);
+
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
+    }
+
+    if (!canStoreBytes(user.storage_used_bytes, body.sizeBytes, user.plan)) {
+      return NextResponse.json(
+        { error: "This upload exceeds your current storage limit." },
+        { status: 403 },
+      );
+    }
+
     const filename = sanitizeDisplayFilename(body.filename);
     const r2Key = buildStorageKey(galleryId, filename);
     const thumbnailKey = buildThumbnailStorageKey(r2Key);

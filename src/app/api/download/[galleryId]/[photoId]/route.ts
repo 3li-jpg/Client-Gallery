@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 import { auth } from "@/lib/auth-config";
 import { getGallerySession } from "@/lib/auth";
-import { getPhotoById } from "@/lib/data";
+import { getGalleryById, getPhotoById } from "@/lib/data";
 import { getPrivateObject } from "@/lib/r2";
 import { sanitizeDisplayFilename } from "@/lib/utils";
 
@@ -42,8 +42,17 @@ export async function GET(
 
   const { galleryId, photoId } = await context.params;
 
-  if (!session?.user?.id && gallerySession?.galleryId !== galleryId) {
-    return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
+  const gallery = await getGalleryById(galleryId);
+
+  if (!gallery) {
+    return NextResponse.json({ error: "Photo not found." }, { status: 404 });
+  }
+
+  const hasGalleryAccess = gallerySession?.galleryId === galleryId;
+  const hasOwnerAccess = session?.user?.id === gallery.user_id;
+
+  if (!hasGalleryAccess && !hasOwnerAccess) {
+    return NextResponse.json({ error: "Photo not found." }, { status: 404 });
   }
 
   const photo = await getPhotoById(galleryId, photoId);

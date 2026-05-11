@@ -1,40 +1,68 @@
 import type { Metadata } from "next";
-import { Fustat, Inter, Noto_Sans, Schibsted_Grotesk } from "next/font/google";
+import {
+  Cormorant_Garamond,
+  IBM_Plex_Mono,
+  Manrope,
+} from "next/font/google";
+
 import "./globals.css";
 
-const schibstedGrotesk = Schibsted_Grotesk({
-  variable: "--font-schibsted-grotesk",
+const display = Cormorant_Garamond({
+  variable: "--font-display",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["500", "600", "700"],
 });
 
-const inter = Inter({
-  variable: "--font-inter",
+const sans = Manrope({
+  variable: "--font-sans",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
 });
 
-const notoSans = Noto_Sans({
-  variable: "--font-noto-sans",
+const mono = IBM_Plex_Mono({
+  variable: "--font-mono",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500"],
 });
 
-const fustat = Fustat({
-  variable: "--font-fustat",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-});
+const metadataBase = process.env.NEXT_PUBLIC_APP_URL
+  ? new URL(process.env.NEXT_PUBLIC_APP_URL)
+  : undefined;
 
 export const metadata: Metadata = {
-  title: "Atelier — Premium Client Galleries for Photographers",
+  metadataBase,
+  title: {
+    default: "Atelier",
+    template: "%s | Atelier",
+  },
   description:
-    "Deliver full-resolution galleries to clients through beautiful private links, protected access, and secure original downloads. Built for wedding, portrait, and commercial photographers.",
+    "Premium private client galleries for photographers, with secure originals, direct uploads, and clear storage-led pricing.",
+  applicationName: "Atelier",
+  keywords: [
+    "photographer client gallery",
+    "private photo delivery",
+    "secure photo downloads",
+    "photography SaaS",
+  ],
   openGraph: {
-    title: "Atelier — Premium Client Galleries",
+    title: "Atelier",
     description:
-      "Deliver full-resolution galleries to clients through beautiful private gallery links.",
+      "Premium private client galleries for photographers, with secure originals and direct browser uploads.",
     type: "website",
+    images: [
+      {
+        url: "/atelier-og.svg",
+        width: 1200,
+        height: 630,
+        alt: "Atelier premium client gallery platform",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Atelier",
+    description:
+      "Premium private client galleries for photographers, with secure originals and direct browser uploads.",
+    images: ["/atelier-og.svg"],
   },
 };
 
@@ -46,9 +74,12 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${schibstedGrotesk.variable} ${inter.variable} ${notoSans.variable} ${fustat.variable} h-full antialiased`}
+      className={`${display.variable} ${sans.variable} ${mono.variable} h-full scroll-smooth antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-[var(--background)] text-[var(--foreground)]">
+      <body className="min-h-full bg-[var(--background)] text-[var(--foreground)]">
+        <a href="#main-content" className="skip-link">
+          Skip to content
+        </a>
         {children}
       </body>
     </html>

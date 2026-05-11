@@ -14,7 +14,7 @@ export default async function SignUpPage() {
   }
 
   return (
-    <main className="page-backdrop min-h-screen flex items-center justify-center">
+    <main id="main-content" className="page-backdrop min-h-screen flex items-center justify-center">
       <div className="w-full max-w-[480px] px-6">
         <div className="text-center mb-10">
           <Link href="/" className="font-display text-2xl font-semibold tracking-tight text-[var(--foreground-strong)]">
@@ -47,9 +47,9 @@ export default async function SignUpPage() {
 
         <p className="font-body mt-6 text-center text-xs text-[var(--muted)]">
           By creating an account you agree to the{" "}
-          <Link href="#" className="underline underline-offset-2 hover:text-[var(--foreground)]">Terms</Link>
+          <Link href="/terms" className="underline underline-offset-2 hover:text-[var(--foreground)]">Terms</Link>
           {" "}and{" "}
-          <Link href="#" className="underline underline-offset-2 hover:text-[var(--foreground)]">Privacy Policy</Link>.
+          <Link href="/privacy" className="underline underline-offset-2 hover:text-[var(--foreground)]">Privacy Policy</Link>.
         </p>
       </div>
     </main>

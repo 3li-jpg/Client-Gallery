@@ -435,6 +435,7 @@ export function UploadPanel({
             body: JSON.stringify({
               filename: file.name,
               contentType: file.type,
+              sizeBytes: file.size,
             }),
           },
         );
@@ -610,7 +611,7 @@ export function UploadPanel({
   };
 
   return (
-    <main className="page-backdrop min-h-screen">
+    <main id="main-content" className="page-backdrop min-h-screen">
       <div className="page-shell flex flex-col gap-8">
       <div className="section-card flex flex-col gap-6 px-6 py-8 lg:flex-row lg:items-end lg:justify-between lg:px-8">
         <div>

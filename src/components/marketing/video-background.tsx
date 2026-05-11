@@ -21,40 +21,40 @@ export function VideoBackground() {
     }
   };
 
-  const cancelCurrentFade = () => {
-    if (animationFrameRef.current !== null) {
-      cancelAnimationFrame(animationFrameRef.current);
-      animationFrameRef.current = null;
-    }
-  };
-
-  const runFade = (targetOpacity: number, duration = 250) => {
-    cancelCurrentFade();
-    const startOpacity = opacityRef.current;
-    const startTime = performance.now();
-
-    const animate = (timestamp: number) => {
-      const elapsed = timestamp - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      const nextOpacity = startOpacity + (targetOpacity - startOpacity) * progress;
-      setVideoOpacity(nextOpacity);
-
-      if (progress < 1) {
-        animationFrameRef.current = requestAnimationFrame(animate);
-      } else {
-        animationFrameRef.current = null;
-      }
-    };
-
-    animationFrameRef.current = requestAnimationFrame(animate);
-  };
-
   useEffect(() => {
     const video = videoRef.current;
 
     if (!video) {
       return;
     }
+
+    const cancelCurrentFade = () => {
+      if (animationFrameRef.current !== null) {
+        cancelAnimationFrame(animationFrameRef.current);
+        animationFrameRef.current = null;
+      }
+    };
+
+    const runFade = (targetOpacity: number, duration = 250) => {
+      cancelCurrentFade();
+      const startOpacity = opacityRef.current;
+      const startTime = performance.now();
+
+      const animate = (timestamp: number) => {
+        const elapsed = timestamp - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const nextOpacity = startOpacity + (targetOpacity - startOpacity) * progress;
+        setVideoOpacity(nextOpacity);
+
+        if (progress < 1) {
+          animationFrameRef.current = requestAnimationFrame(animate);
+        } else {
+          animationFrameRef.current = null;
+        }
+      };
+
+      animationFrameRef.current = requestAnimationFrame(animate);
+    };
 
     const handleLoadedData = async () => {
       try {

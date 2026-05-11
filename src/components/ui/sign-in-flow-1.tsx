@@ -60,29 +60,7 @@ const AnimatedNavLink = ({
 
 function MiniNavbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [headerShapeClass, setHeaderShapeClass] = useState("rounded-full");
-  const shapeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  useEffect(() => {
-    if (shapeTimeoutRef.current) {
-      clearTimeout(shapeTimeoutRef.current);
-    }
-
-    if (isOpen) {
-      setHeaderShapeClass("rounded-2xl");
-      return;
-    }
-
-    shapeTimeoutRef.current = setTimeout(() => {
-      setHeaderShapeClass("rounded-full");
-    }, 280);
-
-    return () => {
-      if (shapeTimeoutRef.current) {
-        clearTimeout(shapeTimeoutRef.current);
-      }
-    };
-  }, [isOpen]);
+  const headerShapeClass = isOpen ? "rounded-2xl" : "rounded-full";
 
   const navLinksData = [
     { label: "Pricing", href: "#pricing" },

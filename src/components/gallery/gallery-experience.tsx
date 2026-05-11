@@ -198,10 +198,6 @@ function Lightbox({
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [onClose, onNavigate]);
 
-  useEffect(() => {
-    setViewerLoaded(false);
-  }, [photo?.id]);
-
   if (!photo || index === -1) {
     return null;
   }
@@ -330,20 +326,6 @@ export function GalleryExperience({
   const deferredSearchQuery = useDeferredValue(searchQuery);
 
   useEffect(() => {
-    setSearchQuery(initialSearchQuery);
-  }, [initialSearchQuery]);
-
-  useEffect(() => {
-    setSortBy(initialSortBy);
-  }, [initialSortBy]);
-
-  useEffect(() => {
-    const availablePhotoIds = new Set(photos.map((photo) => photo.id));
-    setSelectedPhotoIds((current) => current.filter((photoId) => availablePhotoIds.has(photoId)));
-    setSelectedPhotoId((current) => (current && availablePhotoIds.has(current) ? current : null));
-  }, [photos]);
-
-  useEffect(() => {
     const params = new URLSearchParams(window.location.search);
 
     if (searchQuery.trim()) {
@@ -382,16 +364,17 @@ export function GalleryExperience({
     ),
     sortBy,
   );
-  const selectedPhotoIdSet = new Set(selectedPhotoIds);
+  const availablePhotoIds = new Set(photos.map((photo) => photo.id));
+  const selectedPhotoIdSet = new Set(
+    selectedPhotoIds.filter((photoId) => availablePhotoIds.has(photoId)),
+  );
   const selectedPhotos = photos.filter((photo) => selectedPhotoIdSet.has(photo.id));
   const visibleSelectedCount = visiblePhotos.filter((photo) => selectedPhotoIdSet.has(photo.id)).length;
   const allVisibleSelected = visiblePhotos.length > 0 && visibleSelectedCount === visiblePhotos.length;
-
-  useEffect(() => {
-    if (selectedPhotoId && !visiblePhotos.some((photo) => photo.id === selectedPhotoId)) {
-      setSelectedPhotoId(null);
-    }
-  }, [selectedPhotoId, visiblePhotos]);
+  const activePhotoId =
+    selectedPhotoId && visiblePhotos.some((photo) => photo.id === selectedPhotoId)
+      ? selectedPhotoId
+      : null;
 
   const togglePhotoSelection = (photoId: string) => {
     setSelectedPhotoIds((current) =>
@@ -410,11 +393,11 @@ export function GalleryExperience({
   };
 
   const handleNavigate = (direction: -1 | 1) => {
-    if (!selectedPhotoId || visiblePhotos.length === 0) {
+    if (!activePhotoId || visiblePhotos.length === 0) {
       return;
     }
 
-    const currentIndex = visiblePhotos.findIndex((photo) => photo.id === selectedPhotoId);
+    const currentIndex = visiblePhotos.findIndex((photo) => photo.id === activePhotoId);
 
     if (currentIndex === -1) {
       return;
@@ -427,11 +410,11 @@ export function GalleryExperience({
   };
 
   useEffect(() => {
-    if (!selectedPhotoId || visiblePhotos.length === 0) {
+    if (!activePhotoId || visiblePhotos.length === 0) {
       return;
     }
 
-    const currentIndex = visiblePhotos.findIndex((photo) => photo.id === selectedPhotoId);
+    const currentIndex = visiblePhotos.findIndex((photo) => photo.id === activePhotoId);
 
     if (currentIndex === -1) {
       return;
@@ -452,11 +435,11 @@ export function GalleryExperience({
     if (previousPhoto) {
       warmImage(previousPhoto.viewerUrl);
     }
-  }, [selectedPhotoId, visiblePhotos]);
+  }, [activePhotoId, visiblePhotos]);
 
   return (
     <>
-      <main className="page-backdrop min-h-screen">
+      <main id="main-content" className="page-backdrop min-h-screen">
         <div className="page-shell flex max-w-7xl flex-col gap-8">
         <section className="fade-up section-card px-6 py-10 sm:px-10">
           <p className="kicker">
@@ -596,11 +579,12 @@ export function GalleryExperience({
         </div>
       ) : null}
 
-      {selectedPhotoId ? (
+      {activePhotoId ? (
         <Lightbox
+          key={activePhotoId}
           photos={visiblePhotos}
-          photoId={selectedPhotoId}
-          selectedPhotoIds={selectedPhotoIds}
+          photoId={activePhotoId}
+          selectedPhotoIds={Array.from(selectedPhotoIdSet)}
           onClose={() => setSelectedPhotoId(null)}
           onNavigate={handleNavigate}
           onToggleSelect={togglePhotoSelection}

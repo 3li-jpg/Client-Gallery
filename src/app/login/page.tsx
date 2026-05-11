@@ -14,7 +14,7 @@ export default async function LoginPage() {
   }
 
   return (
-    <main className="page-backdrop min-h-screen flex items-center justify-center">
+    <main id="main-content" className="page-backdrop min-h-screen flex items-center justify-center">
       <div className="w-full max-w-[480px] px-6">
         <div className="text-center mb-10">
           <Link href="/" className="font-display text-2xl font-semibold tracking-tight text-[var(--foreground-strong)]">
@@ -44,6 +44,18 @@ export default async function LoginPage() {
             </p>
           </div>
         </div>
+
+        <p className="font-body mt-6 text-center text-xs text-[var(--muted)]">
+          By signing in you agree to the{" "}
+          <Link href="/terms" className="underline underline-offset-2 hover:text-[var(--foreground)]">
+            Terms
+          </Link>{" "}
+          and{" "}
+          <Link href="/privacy" className="underline underline-offset-2 hover:text-[var(--foreground)]">
+            Privacy policy
+          </Link>
+          .
+        </p>
       </div>
     </main>
   );

@@ -4,9 +4,12 @@ import {
   deletePhotoRecord,
   getGalleryById,
   getPhotoById,
+  getUserById,
   insertPhoto,
+  recalculateUserStorage,
 } from "@/lib/data";
-import { assertAllowedImageType, deletePhotoObjects } from "@/lib/r2";
+import { canStoreBytes } from "@/lib/plans";
+import { assertAllowedImageType, deletePhotoObjects, headPrivateObject } from "@/lib/r2";
 import { auth } from "@/lib/auth-config";
 import { sanitizeDisplayFilename } from "@/lib/utils";
 import { bulkPhotoActionSchema, finalizePhotoSchema } from "@/lib/validation";
@@ -38,17 +41,41 @@ export async function POST(
       return NextResponse.json({ error: "Invalid object key." }, { status: 400 });
     }
 
+    const user = await getUserById(session.user.id);
+
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
+    }
+
+    const object = await headPrivateObject(body.r2Key);
+    const sizeBytes = object.ContentLength ?? body.sizeBytes;
+
+    if (!sizeBytes) {
+      return NextResponse.json({ error: "Uploaded original is missing size metadata." }, { status: 400 });
+    }
+
+    if (!canStoreBytes(user.storage_used_bytes, sizeBytes, user.plan)) {
+      await deletePhotoObjects(body.r2Key);
+
+      return NextResponse.json(
+        { error: "This upload exceeds your current storage limit." },
+        { status: 403 },
+      );
+    }
+
     const photo = await insertPhoto({
       photoId: body.photoId,
       galleryId,
       filename: sanitizeDisplayFilename(body.filename),
       r2Key: body.r2Key,
-      contentType: body.contentType,
-      sizeBytes: body.sizeBytes,
+      contentType: object.ContentType ?? body.contentType,
+      sizeBytes,
       width: body.width,
       height: body.height,
       blurDataUrl: body.blurDataUrl,
     });
+
+    await recalculateUserStorage(session.user.id);
 
     return NextResponse.json({ photo }, { status: 201 });
   } catch {
@@ -88,6 +115,8 @@ export async function DELETE(
       await deletePhotoObjects(photo.r2_key);
       await deletePhotoRecord(galleryId, photo.id);
     }
+
+    await recalculateUserStorage(session.user.id);
 
     return NextResponse.json({
       ok: true,

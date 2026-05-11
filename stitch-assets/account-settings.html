@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;family=Inter:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #0A0A0B;
+            color: #e3e2e2;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "tertiary-container": "#00a754",
+                      "inverse-surface": "#e3e2e2",
+                      "tertiary": "#4ee081",
+                      "outline-variant": "#464554",
+                      "on-background": "#e3e2e2",
+                      "on-tertiary-fixed": "#00210c",
+                      "surface-container-lowest": "#0d0e0f",
+                      "on-secondary": "#313031",
+                      "primary-fixed": "#e1e0ff",
+                      "on-primary": "#1000a9",
+                      "outline": "#908fa0",
+                      "secondary": "#c8c6c7",
+                      "on-primary-fixed": "#07006c",
+                      "on-surface": "#e3e2e2",
+                      "on-primary-fixed-variant": "#2f2ebe",
+                      "surface-container-low": "#1a1c1c",
+                      "background": "#121414",
+                      "surface-container": "#1f2020",
+                      "on-secondary-fixed": "#1c1b1c",
+                      "inverse-on-surface": "#2f3131",
+                      "surface-variant": "#343535",
+                      "surface": "#121414",
+                      "on-error": "#690005",
+                      "secondary-fixed-dim": "#c8c6c7",
+                      "on-tertiary-container": "#003114",
+                      "surface-bright": "#383939",
+                      "primary-fixed-dim": "#c0c1ff",
+                      "on-tertiary-fixed-variant": "#005226",
+                      "on-primary-container": "#0d0096",
+                      "tertiary-fixed": "#6efe9b",
+                      "tertiary-fixed-dim": "#4ee081",
+                      "error-container": "#93000a",
+                      "error": "#ffb4ab",
+                      "secondary-container": "#4a494a",
+                      "surface-container-highest": "#343535",
+                      "surface-container-high": "#292a2a",
+                      "on-error-container": "#ffdad6",
+                      "on-secondary-fixed-variant": "#474647",
+                      "surface-tint": "#c0c1ff",
+                      "on-surface-variant": "#c7c4d7",
+                      "secondary-fixed": "#e5e2e3",
+                      "surface-dim": "#121414",
+                      "primary": "#c0c1ff",
+                      "on-tertiary": "#003918",
+                      "inverse-primary": "#494bd6",
+                      "primary-container": "#8083ff",
+                      "on-secondary-container": "#bab8b9"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "gutter": "24px",
+                      "margin-desktop": "48px",
+                      "container-max": "1440px",
+                      "unit": "8px",
+                      "margin-mobile": "16px"
+              },
+              "fontFamily": {
+                      "label-sm": ["Inter"],
+                      "body-md": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "headline-lg": ["Plus Jakarta Sans"],
+                      "display": ["Plus Jakarta Sans"],
+                      "headline-md": ["Plus Jakarta Sans"]
+              },
+              "fontSize": {
+                      "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-surface-dim font-body-md text-on-surface">
+<!-- Sidebar Navigation Shell -->
+<aside class="fixed left-0 h-screen w-72 bg-zinc-950/80 backdrop-blur-2xl border-r border-white/10 flex flex-col py-8 px-6 gap-y-6 z-50">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container" data-icon="camera">camera</span>
+</div>
+<div>
+<h2 class="font-headline-md text-white text-lg font-black">Darkroom Premium</h2>
+<p class="font-label-sm text-zinc-500">Pro Plan</p>
+</div>
+</div>
+<nav class="flex flex-col gap-y-2">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-zinc-500 hover:bg-white/5 hover:text-zinc-200 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+<span class="font-body-md">Overview</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-zinc-500 hover:bg-white/5 hover:text-zinc-200 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="photo_library">photo_library</span>
+<span class="font-body-md">Assets</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-zinc-500 hover:bg-white/5 hover:text-zinc-200 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="verified_user">verified_user</span>
+<span class="font-body-md">Client Proofing</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-zinc-500 hover:bg-white/5 hover:text-zinc-200 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="brush">brush</span>
+<span class="font-body-md">Retouching</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-white/5 text-indigo-400 border-r-2 border-indigo-500 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="tune">tune</span>
+<span class="font-body-md">Settings</span>
+</a>
+</nav>
+<div class="mt-auto">
+<button class="w-full bg-primary-container text-on-primary-container py-3 px-4 rounded-xl font-label-sm flex items-center justify-center gap-2 hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+                Upload Project
+            </button>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-72 min-h-screen">
+<!-- Top App Bar Navigation Shell -->
+<header class="sticky top-0 z-40 bg-zinc-950/50 backdrop-blur-xl border-b border-white/10 flex justify-between items-center w-full px-12 h-20">
+<div class="flex items-center gap-8">
+<span class="text-xl font-bold tracking-tighter text-zinc-100 font-headline-lg">Lumina OS</span>
+<nav class="hidden md:flex gap-6">
+<a class="font-label-sm text-zinc-500 hover:text-zinc-300 transition-colors" href="#">Dashboard</a>
+<a class="font-label-sm text-zinc-500 hover:text-zinc-300 transition-colors" href="#">Gallery</a>
+<a class="font-label-sm text-zinc-500 hover:text-zinc-300 transition-colors" href="#">Analytics</a>
+</nav>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative">
+<span class="material-symbols-outlined text-zinc-500 hover:text-indigo-400 cursor-pointer" data-icon="notifications">notifications</span>
+<span class="absolute -top-1 -right-1 w-2 h-2 bg-indigo-500 rounded-full"></span>
+</div>
+<span class="material-symbols-outlined text-zinc-500 hover:text-indigo-400 cursor-pointer" data-icon="settings">settings</span>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-white/10">
+<img alt="Photographer Profile" class="w-full h-full object-cover" data-alt="professional photographer portrait with soft moody lighting in a studio setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0dYQkRVEzSUzFmVlhcjur1F4L-NiqySbOynwauFsdmj2xrqi3mbY-1PjQnYdp7SfJgZa9fiU1kGVPlTMRGsGtMT68QGYXXwVmon4I1ZbK4fzORq2kstKpiG5eCyw409Bc1tIWq9dgBJpdX5ubtJNrV8IskYzIPMUjGz8xptdyRhR0_7shU8jPo0AfgB3Ab43ve-VDCzOZH1P7XkoRcrcrqcokIQQCECjWnz3Jjg3kCbkpzkRUSXyrbn3bZFv7v9-oGcsHLKiVxi6i"/>
+</div>
+</div>
+</header>
+<section class="max-w-5xl mx-auto px-12 py-16">
+<!-- Profile Header Section -->
+<div class="flex flex-col md:flex-row items-center gap-8 mb-16 border-b border-white/5 pb-16">
+<div class="relative group">
+<div class="w-40 h-40 rounded-full overflow-hidden border-2 border-primary ring-8 ring-white/5 shadow-2xl transition-transform duration-500 group-hover:scale-105">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="high-end editorial portrait of a professional male photographer with elegant dark attire" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCBseQUiPjYuz1knSM2WQsEHHmcY6nG5IOZ3CnzWFS-X538zVh1lwjKIXzB7_bV9ThLuRJo0goDZSlgzIn2A1vqJr9UIMNmJPbGleSOL7-q3cNPW0ZI8RyvJbJBgwoATmY3bT-1sfZ-aZ6MwVPgSIf18a8Zw-sAJhvckpE5n5V6Gvw7pxN1PqXSm2MUqP69cjrYumYotrm4qPcaKpktabrDxlLSuuVzjc2U16qAhTNbhXa26RwMCYTY-HpC4htY9_vPc_kIl47rxGGd"/>
+</div>
+<button class="absolute bottom-1 right-1 bg-zinc-900 border border-white/10 p-3 rounded-full hover:bg-zinc-800 transition-colors shadow-lg">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="edit">edit</span>
+</button>
+</div>
+<div class="text-center md:text-left space-y-2">
+<h1 class="font-display text-4xl text-white">Julian Saint-Atelier</h1>
+<p class="font-body-lg text-zinc-500">Principal Creative Director &amp; Lead Photographer</p>
+<div class="flex gap-3 pt-4 justify-center md:justify-start">
+<span class="px-4 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 font-label-sm">Verified Artist</span>
+<span class="px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-zinc-400 font-label-sm">Studio Member</span>
+</div>
+</div>
+</div>
+<!-- Settings Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+<!-- Account Information -->
+<div class="lg:col-span-8 space-y-12">
+<section class="space-y-6">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-md text-white">Account Information</h3>
+<button class="text-indigo-400 font-label-sm hover:underline">Update details</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="font-label-sm text-zinc-500 ml-1">Full Name</label>
+<input class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-all" type="text" value="Julian Saint-Atelier"/>
+</div>
+<div class="space-y-2">
+<label class="font-label-sm text-zinc-500 ml-1">Email Address</label>
+<input class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-all" type="email" value="julian@atelier.studio"/>
+</div>
+<div class="md:col-span-2 space-y-2">
+<label class="font-label-sm text-zinc-500 ml-1">Password</label>
+<div class="relative">
+<input class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-all" type="password" value="••••••••••••"/>
+<button class="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white transition-colors">
+<span class="material-symbols-outlined text-xl" data-icon="visibility">visibility</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Privacy & Security -->
+<section class="space-y-6 pt-12 border-t border-white/5">
+<h3 class="font-headline-md text-white">Privacy &amp; Security</h3>
+<div class="space-y-4">
+<div class="glass-panel p-6 rounded-2xl flex items-center justify-between group hover:border-indigo-500/30 transition-all">
+<div class="flex items-center gap-4">
+<div class="p-3 bg-indigo-500/10 rounded-xl">
+<span class="material-symbols-outlined text-indigo-400" data-icon="database">database</span>
+</div>
+<div>
+<p class="font-body-md text-white font-semibold">Data Sharing</p>
+<p class="font-label-sm text-zinc-500">Allow anonymized usage data to improve Lumina OS tools</p>
+</div>
+</div>
+<div class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-12 h-6 bg-zinc-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
+</div>
+</div>
+<div class="glass-panel p-6 rounded-2xl flex items-center justify-between group hover:border-indigo-500/30 transition-all">
+<div class="flex items-center gap-4">
+<div class="p-3 bg-indigo-500/10 rounded-xl">
+<span class="material-symbols-outlined text-indigo-400" data-icon="public">public</span>
+</div>
+<div>
+<p class="font-body-md text-white font-semibold">Profile Visibility</p>
+<p class="font-label-sm text-zinc-500">Display your portfolio on the global Atelier explore page</p>
+</div>
+</div>
+<div class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-12 h-6 bg-zinc-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
+</div>
+</div>
+<div class="glass-panel p-6 rounded-2xl flex items-center justify-between group hover:border-indigo-500/30 transition-all">
+<div class="flex items-center gap-4">
+<div class="p-3 bg-indigo-500/10 rounded-xl">
+<span class="material-symbols-outlined text-indigo-400" data-icon="fingerprint">fingerprint</span>
+</div>
+<div>
+<p class="font-body-md text-white font-semibold">Two-Factor Authentication</p>
+<p class="font-label-sm text-zinc-500">Secure your account with biological or device verification</p>
+</div>
+</div>
+<button class="bg-white/10 hover:bg-white/20 text-white px-5 py-2 rounded-lg font-label-sm transition-colors border border-white/10">Configure</button>
+</div>
+</div>
+</section>
+</div>
+<!-- Notification Preferences & Sidebar Meta -->
+<div class="lg:col-span-4 space-y-8">
+<div class="glass-panel p-8 rounded-3xl space-y-8">
+<h3 class="font-headline-md text-white">Notifications</h3>
+<div class="space-y-6">
+<div class="flex items-start justify-between gap-4">
+<div>
+<p class="font-body-md text-white font-semibold">Email Alerts</p>
+<p class="font-label-sm text-zinc-500">Campaign updates &amp; project proofs</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer mt-1">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-10 h-5 bg-zinc-800 rounded-full peer peer-checked:after:translate-x-5 peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-indigo-600"></div>
+</label>
+</div>
+<div class="flex items-start justify-between gap-4">
+<div>
+<p class="font-body-md text-white font-semibold">Push Notifications</p>
+<p class="font-label-sm text-zinc-500">Real-time retouching approvals</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer mt-1">
+<input class="sr-only peer" type="checkbox"/>
+<div class="w-10 h-5 bg-zinc-800 rounded-full peer peer-checked:after:translate-x-5 peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-indigo-600"></div>
+</label>
+</div>
+<div class="flex items-start justify-between gap-4">
+<div>
+<p class="font-body-md text-white font-semibold">Newsletter</p>
+<p class="font-label-sm text-zinc-500">Monthly curation of industry trends</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer mt-1">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-10 h-5 bg-zinc-800 rounded-full peer peer-checked:after:translate-x-5 peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-indigo-600"></div>
+</label>
+</div>
+</div>
+</div>
+<!-- Usage Stats / Mini Bento -->
+<div class="bg-indigo-600/10 border border-indigo-500/20 rounded-3xl p-8 space-y-4">
+<div class="flex items-center justify-between">
+<span class="material-symbols-outlined text-indigo-400" data-icon="cloud_done">cloud_done</span>
+<span class="text-indigo-400 font-label-sm">82% Used</span>
+</div>
+<h4 class="font-headline-md text-white">Storage Status</h4>
+<div class="w-full bg-white/5 rounded-full h-1.5">
+<div class="bg-indigo-500 h-1.5 rounded-full" style="width: 82%"></div>
+</div>
+<p class="font-label-sm text-zinc-400 leading-relaxed">You are currently using 8.2 TB of your 10 TB Pro plan storage.</p>
+<button class="w-full mt-2 text-indigo-400 font-label-sm border border-indigo-400/30 py-3 rounded-xl hover:bg-indigo-400 hover:text-white transition-all">Upgrade Storage</button>
+</div>
+<!-- Dangerous Zone -->
+<div class="p-8 border border-red-500/10 bg-red-500/5 rounded-3xl space-y-4">
+<h4 class="font-body-md text-red-400 font-bold">Advanced Operations</h4>
+<p class="font-label-sm text-zinc-500">Permanently delete your profile and all assets. This action is irreversible.</p>
+<button class="text-red-400 font-label-sm hover:text-red-300 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="delete_forever">delete_forever</span>
+                            Delete Account
+                        </button>
+</div>
+</div>
+</div>
+<!-- Footer Actions -->
+<div class="mt-16 flex items-center justify-end gap-4 border-t border-white/5 pt-8">
+<button class="px-8 py-3 rounded-xl text-zinc-400 font-label-sm hover:text-white transition-colors">Discard Changes</button>
+<button class="px-10 py-3 rounded-xl bg-primary text-on-primary font-label-sm shadow-xl shadow-indigo-500/20 hover:scale-105 active:scale-95 transition-all">Save Preferences</button>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation for Mobile -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full bg-zinc-950/80 backdrop-blur-2xl border-t border-white/10 flex justify-around items-center h-20 px-4 z-50">
+<button class="flex flex-col items-center gap-1 text-zinc-500">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+<span class="text-[10px] font-semibold">Home</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-zinc-500">
+<span class="material-symbols-outlined" data-icon="photo_library">photo_library</span>
+<span class="text-[10px] font-semibold">Library</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-indigo-400">
+<span class="material-symbols-outlined" data-icon="tune">tune</span>
+<span class="text-[10px] font-semibold">Settings</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-zinc-500">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+<span class="text-[10px] font-semibold">Profile</span>
+</button>
+</nav>
+</body></html>

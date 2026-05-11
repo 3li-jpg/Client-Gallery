@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
-import { createGallery, gallerySlugExists } from "@/lib/data";
+import { createGallery, gallerySlugExists, getUserById, listGalleries } from "@/lib/data";
+import { canCreateGallery, getPlan } from "@/lib/plans";
 import { generateAccessCode, hashSecretValue, sanitizeSlug } from "@/lib/utils";
 import { createGallerySchema } from "@/lib/validation";
 import { auth } from "@/lib/auth-config";
@@ -24,6 +25,24 @@ export async function POST(request: Request) {
 
     if (await gallerySlugExists(slug)) {
       return NextResponse.json({ error: "That slug is already taken." }, { status: 409 });
+    }
+
+    const [user, galleries] = await Promise.all([
+      getUserById(session.user.id),
+      listGalleries(session.user.id),
+    ]);
+
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
+    }
+
+    if (!canCreateGallery(user.plan, galleries.length)) {
+      const plan = getPlan(user.plan);
+
+      return NextResponse.json(
+        { error: `${plan.name} includes up to ${plan.galleryLimit} galleries.` },
+        { status: 403 },
+      );
     }
 
     const accessCode = body.accessCode?.trim().toUpperCase() || generateAccessCode();

@@ -102,19 +102,58 @@ export function getPlan(planId: string): PlanDefinition {
   return PLANS[planId] ?? PLANS.free!;
 }
 
-export function getStoragePercentage(usedBytes: number, planId: string): number {
-  const plan = getPlan(planId);
-  return Math.min(100, Math.round((usedBytes / plan.storageLimitBytes) * 100));
+export function normalizeBytes(value: number | string | null | undefined): number {
+  if (typeof value === "number") {
+    return Number.isFinite(value) ? value : 0;
+  }
+
+  if (typeof value === "string") {
+    const parsed = Number(value);
+    return Number.isFinite(parsed) ? parsed : 0;
+  }
+
+  return 0;
 }
 
-export function formatBytes(bytes: number): string {
-  if (bytes === 0) return "0 B";
+export function canCreateGallery(planId: string, galleryCount: number): boolean {
+  const plan = getPlan(planId);
+
+  return plan.galleryLimit === null || galleryCount < plan.galleryLimit;
+}
+
+export function canStoreBytes(
+  usedBytes: number | string | null | undefined,
+  additionalBytes: number,
+  planId: string,
+): boolean {
+  const plan = getPlan(planId);
+
+  return normalizeBytes(usedBytes) + additionalBytes <= plan.storageLimitBytes;
+}
+
+export function getStoragePercentage(
+  usedBytes: number | string | null | undefined,
+  planId: string,
+): number {
+  const plan = getPlan(planId);
+  const normalizedUsedBytes = normalizeBytes(usedBytes);
+
+  return Math.min(100, Math.round((normalizedUsedBytes / plan.storageLimitBytes) * 100));
+}
+
+export function formatBytes(bytes: number | string | null | undefined): string {
+  const normalizedBytes = normalizeBytes(bytes);
+
+  if (normalizedBytes === 0) return "0 B";
+
   const units = ["B", "KB", "MB", "GB", "TB"];
-  let value = bytes;
+  let value = normalizedBytes;
   let index = 0;
+
   while (value >= 1024 && index < units.length - 1) {
     value /= 1024;
     index++;
   }
+
   return `${value.toFixed(index === 0 ? 0 : 1)} ${units[index]}`;
 }
